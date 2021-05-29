@@ -7,11 +7,14 @@ import template_img from "./assets/template_img.jpg";
 import MainViewTemplate from "./src/templates/MainViewTemplate";
 import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
-import GroupOfRooms from "./src/components/rooms/GroupOfRooms";
+import Rooms from "./src/views/Rooms";
+import TopHeader from "./src/components/header/TopHeader";
 
 export default function App() {
   let [fontsLoaded] = useFonts({
-    Poppins: require("./assets/fonts/Poppins-Italic.ttf"),
+    Poppins: require("./assets/fonts/Poppins-Regular.ttf"),
+    SFCompactTextRegular: require("./assets/fonts/sf-compact-text-regular.ttf"),
+    SFCompactTextLight: require("./assets/fonts/sf-compact-text-light.ttf"),
   });
 
   if (!fontsLoaded) {
@@ -20,7 +23,8 @@ export default function App() {
     return (
       <View>
         <MainViewTemplate>
-          <GroupOfRooms></GroupOfRooms>
+          <TopHeader></TopHeader>
+          <Rooms></Rooms>
         </MainViewTemplate>
       </View>
     );

@@ -2,7 +2,6 @@ import React from "react";
 import { FlatList } from "react-native";
 import { ScrollView } from "react-native";
 import { View, Text, Image, StyleSheet } from "react-native";
-import SearchIcon from "../../../assets/search.svg";
 import colors from "../../styles/colors";
 import Room from "./Room";
 
@@ -41,6 +40,8 @@ function GroupOfRooms(title, styles) {
 const groupOfRoomsStyle = StyleSheet.create({
   container: {
     display: "flex",
+    marginTop: 130,
+    backgroundColor: colors.blue.tint02,
   },
 });
 
