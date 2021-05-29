@@ -1,19 +1,62 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useState } from "react";
-import { Image, Text, View, TouchableOpacity } from "react-native";
-import { styles } from "./src/styles/styleSheet";
-import useImagePicker from "./src/helpers/imagePicker";
+import React from "react";
+import AppLoading from "expo-app-loading";
+import { useFonts } from "expo-font";
+import RoomsScreen from "./src/views/Rooms";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import HeaderRightComponent from "./src/components/header/HeaderRightComponent";
+import { Example } from "./src/views/Chat";
+import { headerStyles } from "./src/styles/styleSheet";
+
+const buttonIsNotWorking = () => {
+  alert("Sorry, this function is not available yet!");
+};
+const Stack = createStackNavigator();
 
 export default function App() {
-  const [{ imageUri, openImagePicker }] = useImagePicker();
+  let [fontsLoaded] = useFonts({
+    Poppins: require("./assets/fonts/Poppins-Regular.ttf"),
+    SFCompactTextRegular: require("./assets/fonts/sf-compact-text-regular.ttf"),
+    SFCompactTextLight: require("./assets/fonts/sf-compact-text-light.ttf"),
+  });
 
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
   return (
-    <View style={styles.container}>
-      <Image source={{ uri: imageUri.localUri }} style={styles.image} />
-      <Text style={styles.instructions}>Here is a nice photo</Text>
-      <TouchableOpacity onPress={openImagePicker} style={styles.button}>
-        <Text>Get a photo</Text>
-      </TouchableOpacity>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="Rooms"
+        screenOptions={{
+          headerStyle: headerStyles.header,
+          headerTitleStyle: headerStyles.title,
+        }}
+      >
+        <Stack.Screen
+          name="Rooms"
+          component={RoomsScreen}
+          options={{
+            headerRight: () => (
+              <HeaderRightComponent
+                handlePress={() => buttonIsNotWorking()}
+                type="rooms"
+              />
+            ),
+          }}
+        />
+        <Stack.Screen
+          name="Chat"
+          component={Example}
+          options={{
+            headerRight: () => (
+              <HeaderRightComponent
+                handlePress={() => buttonIsNotWorking()}
+                type="chat"
+              />
+            ),
+          }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
