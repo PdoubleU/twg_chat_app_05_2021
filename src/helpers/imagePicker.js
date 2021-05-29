@@ -6,6 +6,7 @@ function useImagePicker() {
   const [imageUri, setImageUri] = useState();
 
   let openImagePicker = async () => {
+    alert("image picker");
     let permissionResult =
       await ImagePicker.requestMediaLibraryPermissionsAsync();
 
