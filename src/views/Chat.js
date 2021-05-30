@@ -7,16 +7,19 @@ import {
   customComposer,
 } from "../helpers/GiftedChatCustomize";
 import HeaderLeftChatComponent from "../components/header/HeaderLeftChatComponent";
+import AddMsg from "../api/mutationAddMsg";
 
 export function Example({ route, navigation }) {
   const [msgs, setMsgs] = useState(null);
+  const { addMsg } = AddMsg();
   const messages = route.params.data.room.messages;
+  const roomId = route.params.id;
 
   useEffect(() => {
     if (!messages) return; // no messages stored, we can just open empty chat
     let setOfMessages = [];
     messages.map((msg) => {
-      setOfMessages.push({
+      setOfMessages.unshift({
         _id: msg.id,
         text: msg.body,
         createdAt: msg.insertedAt,
@@ -30,8 +33,10 @@ export function Example({ route, navigation }) {
     setMsgs(setOfMessages);
   }, []);
 
-  const onSend = useCallback((msgs = []) => {
-    setMsgs((previousMessages) => GiftedChat.append(previousMessages, msgs));
+  const onSend = useCallback((message = []) => {
+    let body = message[0].text;
+    addMsg({ variables: { roomId, body } });
+    setMsgs((previousMessages) => GiftedChat.append(previousMessages, message));
   }, []);
 
   return (
@@ -46,9 +51,9 @@ export function Example({ route, navigation }) {
         messages={msgs}
         renderDay={() => null}
         renderTime={() => null}
-        onSend={(msgs) => onSend(msgs)}
+        onSend={(message) => onSend(message)}
         user={{
-          _id: 1,
+          id: "184f7251-7688-4ea1-83ba-1d857ab6e4e3",
         }}
       />
     </>
