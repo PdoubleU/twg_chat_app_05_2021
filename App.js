@@ -51,6 +51,7 @@ export default function App() {
             name="Chat"
             component={Example}
             options={{
+              title: null,
               headerRight: () => (
                 <HeaderRightComponent
                   handlePress={() => buttonIsNotWorking()}

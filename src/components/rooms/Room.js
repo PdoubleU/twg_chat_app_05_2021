@@ -1,24 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import { roomStyleActive, roomStyleInActive } from "../../styles/styleSheet";
+import { useNavigation } from "@react-navigation/native";
 import roomData from "../../api/roomData";
 
 function Room({ ...props }) {
   const { id, title } = props;
-  const [activeRoom, setActiveRoom] = useState(true);
+  const [activeRoom, setActiveRoom] = useState(false);
   const { loading, error, data } = roomData(id);
+  const navigation = useNavigation();
 
-  const handlePress = () => alert("fetch room");
+  const handlePress = () => navigation.navigate("Chat", { id, data });
 
   return (
     <TouchableOpacity
       style={
         activeRoom ? roomStyleActive.container : roomStyleInActive.container
       }
-      onPress={handlePress}
+      onPress={() => handlePress(id, data)}
     >
       {loading && <Text>Is loading</Text>}
-      {console.log(data)}
       {!loading && !error ? (
         <>
           <Image
