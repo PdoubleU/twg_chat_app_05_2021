@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { GiftedChat } from "react-native-gifted-chat";
+import { View, TouchableOpacity, Image, Text } from "react-native";
 import {
   customInputToolbar,
   customSendButton,
@@ -8,11 +9,24 @@ import {
 } from "../helpers/GiftedChatCustomize";
 import HeaderLeftChatComponent from "../components/header/HeaderLeftChatComponent";
 import AddMsg from "../api/mutationAddMsg";
+import messageAdded from "../api/messageAddedSub";
 import { unshiftMsgs } from "../helpers/unshiftMsgs";
+import { useSubscription, gql } from "@apollo/client";
+
+const messageAddedSub = gql`
+  subscription messageAdded($roomId: String!) {
+    messageAdded(roomId: $roomId) {
+      body
+    }
+  }
+`;
 
 export function Example({ route }) {
   const [msgs, setMsgs] = useState(null);
   const { addMsg } = AddMsg();
+  const { data, loading, error } = useSubscription(messageAddedSub, {
+    variables: { roomId },
+  });
   const messages = route.params.data.room.messages;
   const roomId = route.params.id;
 
@@ -33,7 +47,10 @@ export function Example({ route }) {
 
   return (
     <>
-      <HeaderLeftChatComponent></HeaderLeftChatComponent>
+      {/* <Text>New message: {!loading && data.body}</Text> */}
+      <HeaderLeftChatComponent
+        title={!loading && { data }}
+      ></HeaderLeftChatComponent>
       <GiftedChat
         alwaysShowSend={true}
         renderInputToolbar={(props) => customInputToolbar(props)}
