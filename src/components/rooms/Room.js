@@ -1,48 +1,69 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
-import SearchIcon from "../../../assets/search.svg";
+import React, { useEffect, useState } from "react";
+import { View, Text, TouchableOpacity, Image } from "react-native";
 import { roomStyleActive, roomStyleInActive } from "../../styles/styleSheet";
+import { useNavigation } from "@react-navigation/native";
+import roomData from "../../api/roomData";
 
-function Room({ handlePress }) {
-  const [activeRoom, setActiveRoom] = useState(true);
-  console.log(handlePress);
+function Room({ ...props }) {
+  const { id, title } = props;
+  const [activeRoom, setActiveRoom] = useState(false);
+  const { loading, error, data } = roomData(id);
+  const navigation = useNavigation();
+
+  const handlePress = () => navigation.navigate("Chat", { id, data });
+
   return (
     <TouchableOpacity
       style={
         activeRoom ? roomStyleActive.container : roomStyleInActive.container
       }
-      onPress={handlePress}
+      onPress={() => handlePress(id, data)}
     >
-      <SearchIcon
-        width={64}
-        height={64}
-        style={activeRoom ? roomStyleActive.icon : roomStyleInActive.icon}
-      ></SearchIcon>
-      <View
-        style={activeRoom ? roomStyleActive.textBox : roomStyleInActive.textBox}
-      >
-        <Text
-          style={activeRoom ? roomStyleActive.title : roomStyleInActive.tilte}
-        >
-          Who is the conversation with?
-        </Text>
-        <Text
-          style={
-            activeRoom ? roomStyleActive.lastMsg : roomStyleInActive.lastMsg
-          }
-        >
-          Last message here...
-        </Text>
-      </View>
-      <Text
-        style={
-          activeRoom
-            ? roomStyleActive.activeStatus
-            : roomStyleInActive.activeStatus
-        }
-      >
-        {activeRoom ? "" : "4 m ago"}
-      </Text>
+      {loading && <Text>Is loading</Text>}
+      {!loading && !error ? (
+        <>
+          <Image
+            style={activeRoom ? roomStyleActive.icon : roomStyleInActive.icon}
+            source={{
+              uri: data.room.messages[data.room.messages.length - 1].user
+                .profilePic,
+            }}
+          ></Image>
+          <View
+            style={
+              activeRoom ? roomStyleActive.textBox : roomStyleInActive.textBox
+            }
+          >
+            <Text
+              style={
+                activeRoom ? roomStyleActive.title : roomStyleInActive.tilte
+              }
+            >
+              {title}
+            </Text>
+            <Text
+              style={
+                activeRoom ? roomStyleActive.lastMsg : roomStyleInActive.lastMsg
+              }
+            >
+              {data.room.messages[data.room.messages.length - 1].body}
+            </Text>
+          </View>
+          <Text
+            style={
+              activeRoom
+                ? roomStyleActive.activeStatus
+                : roomStyleInActive.activeStatus
+            }
+          >
+            {activeRoom
+              ? ""
+              : data.room.messages[data.room.messages.length - 1].insertedAt}
+          </Text>
+        </>
+      ) : (
+        <Text>Error. Try again!</Text>
+      )}
     </TouchableOpacity>
   );
 }

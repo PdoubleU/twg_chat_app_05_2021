@@ -71,6 +71,8 @@ export const roomStyleActive = StyleSheet.create({
   icon: {
     borderRadius: 50,
     marginLeft: 16,
+    height: 64,
+    width: 64,
   },
   textBox: {
     marginLeft: 10,
@@ -119,6 +121,8 @@ export const roomStyleInActive = StyleSheet.create({
   icon: {
     borderRadius: 50,
     marginLeft: 10,
+    height: 64,
+    width: 64,
   },
   textBox: {
     marginLeft: 10,
