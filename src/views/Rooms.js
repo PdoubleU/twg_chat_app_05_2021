@@ -6,7 +6,7 @@ import roomsData from "../api/roomsData";
 
 function RoomsScreen() {
   const { loading, error, data } = roomsData();
-
+  // component loads all rooms available for user via roomsData() (apollo query) and render them on the screen, as a list:
   return (
     <ScrollView style={roomsStyle.container}>
       {loading && <Text>Is loading</Text>}

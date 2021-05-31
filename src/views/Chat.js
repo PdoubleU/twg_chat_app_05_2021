@@ -8,28 +8,20 @@ import {
 } from "../helpers/GiftedChatCustomize";
 import HeaderLeftChatComponent from "../components/header/HeaderLeftChatComponent";
 import AddMsg from "../api/mutationAddMsg";
+import { unshiftMsgs } from "../helpers/unshiftMsgs";
 
-export function Example({ route, navigation }) {
+export function Example({ route }) {
   const [msgs, setMsgs] = useState(null);
   const { addMsg } = AddMsg();
   const messages = route.params.data.room.messages;
   const roomId = route.params.id;
 
   useEffect(() => {
-    if (!messages) return; // no messages stored, we can just open empty chat
-    let setOfMessages = [];
-    messages.map((msg) => {
-      setOfMessages.unshift({
-        _id: msg.id,
-        text: msg.body,
-        createdAt: msg.insertedAt,
-        user: {
-          _id: msg.user.id,
-          name: msg.user.firstName,
-          avatar: msg.user.profilePic,
-        },
-      });
-    });
+    // no messages stored, we can just open empty chat
+    if (!messages) return;
+    // use auxiliary function to return new array of downloaded messages:
+    let setOfMessages = unshiftMsgs(messages);
+    // set msgs with downloaded messages:
     setMsgs(setOfMessages);
   }, []);
 
