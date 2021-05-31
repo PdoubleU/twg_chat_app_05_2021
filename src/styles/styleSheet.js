@@ -146,7 +146,7 @@ export const roomStyleInActive = StyleSheet.create({
   },
   activeStatus: {
     position: "absolute",
-    backgroundColor: colors.active,
+    backgroundColor: colors.whiteBckg,
     top: 8,
     right: 16,
     fontSize: 10,
@@ -161,6 +161,23 @@ export const headerRightComStyle = StyleSheet.create({
     width: "auto",
     right: 16,
     bottom: -11,
+  },
+  icon: {
+    borderRadius: 50,
+    width: 44,
+    height: 44,
+    marginLeft: 10,
+  },
+});
+export const headerLeftComStyle = StyleSheet.create({
+  container: {
+    position: "absolute",
+    display: "flex",
+    flexDirection: "row",
+    width: "auto",
+    left: 50,
+    top: -80,
+    zIndex: 9999,
   },
   icon: {
     borderRadius: 50,

@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { GiftedChat } from "react-native-gifted-chat";
+import { View, TouchableOpacity, Image, Text } from "react-native";
 import {
   customInputToolbar,
   customSendButton,
@@ -8,13 +9,40 @@ import {
 } from "../helpers/GiftedChatCustomize";
 import HeaderLeftChatComponent from "../components/header/HeaderLeftChatComponent";
 import AddMsg from "../api/mutationAddMsg";
+//import userIsTyping from "../api/typingUserSub";
 import { unshiftMsgs } from "../helpers/unshiftMsgs";
+import { useSubscription, gql } from "@apollo/client";
+
+const typingSub = gql`
+  subscription typingUser($roomId: String!) {
+    typingUser(roomId: $roomId) {
+      firstName
+    }
+  }
+`;
+
+const messageAddedSub = gql`
+  subscription onAddMessage($roomId: String!) {
+    messageAdded(roomId: $roomId) {
+      body
+    }
+  }
+`;
 
 export function Example({ route }) {
+  const dataLastItem = route.params.data.room.messages.length - 1;
+  const messages = route.params.data.room.messages;
+  const userName = route.params.data.room.messages[dataLastItem].user.firstName;
+  const userPic = route.params.data.room.messages[dataLastItem].user.profilePic;
+  const roomId = route.params.id;
   const [msgs, setMsgs] = useState(null);
   const { addMsg } = AddMsg();
-  const messages = route.params.data.room.messages;
-  const roomId = route.params.id;
+  const { newMessage } = useSubscription(messageAddedSub, {
+    variables: { roomId },
+  });
+  const { userIsTyping } = useSubscription(typingSub, {
+    variables: { roomId },
+  });
 
   useEffect(() => {
     // no messages stored, we can just open empty chat
@@ -33,7 +61,11 @@ export function Example({ route }) {
 
   return (
     <>
-      <HeaderLeftChatComponent></HeaderLeftChatComponent>
+      {/* <Text>New message: {!loading && data.body}</Text> */}
+      <HeaderLeftChatComponent
+        title={userName}
+        picture={userPic}
+      ></HeaderLeftChatComponent>
       <GiftedChat
         alwaysShowSend={true}
         renderInputToolbar={(props) => customInputToolbar(props)}

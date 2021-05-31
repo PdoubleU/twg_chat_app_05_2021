@@ -1,11 +1,12 @@
 import React from "react";
-import { View, TouchableOpacity, Image } from "react-native";
-import { roomStyleActive, headerRightComStyle } from "../../styles/styleSheet";
+import { View, TouchableOpacity, Image, Text } from "react-native";
+import { roomStyleActive, headerLeftComStyle } from "../../styles/styleSheet";
 
-function HeaderLeftChatComponent(picture) {
+function HeaderLeftChatComponent({ picture, title }) {
   return (
-    <View style={headerRightComStyle.container}>
-      <Image style={roomStyleActive.icon}></Image>
+    <View style={headerLeftComStyle.container}>
+      <Image style={roomStyleActive.icon} source={{ uri: picture }}></Image>
+      <Text>{title}</Text>
     </View>
   );
 }
