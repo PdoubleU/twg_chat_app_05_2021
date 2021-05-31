@@ -175,8 +175,8 @@ export const headerLeftComStyle = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     width: "auto",
-    left: 50,
-    top: -80,
+    left: 30,
+    top: -55,
     zIndex: 9999,
   },
   icon: {
@@ -184,5 +184,26 @@ export const headerLeftComStyle = StyleSheet.create({
     width: 44,
     height: 44,
     marginLeft: 10,
+  },
+  textCont: {
+    display: "flex",
+  },
+  title: {
+    color: colors.plum.normal,
+    fontFamily: "Poppins",
+    fontStyle: "normal",
+    fontWeight: "700",
+    fontSize: 16,
+    lineHeight: 24,
+    marginLeft: 8,
+  },
+  subtitle: {
+    fontFamily: "SFCompactTextLight",
+    marginTop: 4,
+    fontSize: 14,
+    lineHeight: 16,
+    fontWeight: "400",
+    color: colors.whiteBckg,
+    marginLeft: 8,
   },
 });

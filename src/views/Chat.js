@@ -6,6 +6,7 @@ import {
   customSendButton,
   customBubble,
   customComposer,
+  customMessage,
 } from "../helpers/GiftedChatCustomize";
 import HeaderLeftChatComponent from "../components/header/HeaderLeftChatComponent";
 import AddMsg from "../api/mutationAddMsg";
