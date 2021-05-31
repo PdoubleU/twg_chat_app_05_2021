@@ -1,6 +1,5 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React from "react";
 import {
-  GiftedChat,
   InputToolbar,
   Send,
   Bubble,
@@ -10,7 +9,6 @@ import {
 import { StyleSheet } from "react-native";
 import colors from "../styles/colors";
 import SendIcon from "../../assets/send.svg";
-import { View } from "react-native";
 
 export const customInputToolbar = (props) => {
   return <InputToolbar {...props} containerStyle={chatStyles.inputBar} />;

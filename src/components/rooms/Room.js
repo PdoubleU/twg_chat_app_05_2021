@@ -5,8 +5,8 @@ import { useNavigation } from "@react-navigation/native";
 import roomData from "../../api/roomData";
 
 function Room({ ...props }) {
-  const { id, title } = props;
-  const [activeRoom, setActiveRoom] = useState(false);
+  const { id, title, active } = props;
+  const [activeRoom, setActiveRoom] = useState(active);
   const { loading, error, data } = roomData(id);
   const navigation = useNavigation();
   const [lastActive, setLastActive] = useState("some time ago");

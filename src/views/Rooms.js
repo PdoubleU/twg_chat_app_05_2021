@@ -14,7 +14,14 @@ function RoomsScreen() {
       {loading && <Text>Is loading...</Text>}
       {!loading && !error ? (
         data.usersRooms.rooms.map((room) => {
-          return <Room key={room.id} id={room.id} title={room.name}></Room>;
+          return (
+            <Room
+              key={room.id}
+              id={room.id}
+              title={room.name}
+              active={true}
+            ></Room>
+          );
         })
       ) : (
         <Text>Error. Try again!</Text>
