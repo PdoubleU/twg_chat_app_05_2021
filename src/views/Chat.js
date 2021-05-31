@@ -45,7 +45,7 @@ export function Example({ route }) {
         renderTime={() => null}
         onSend={(message) => onSend(message)}
         user={{
-          id: "184f7251-7688-4ea1-83ba-1d857ab6e4e3",
+          _id: "184f7251-7688-4ea1-83ba-1d857ab6e4e3",
         }}
       />
     </>
