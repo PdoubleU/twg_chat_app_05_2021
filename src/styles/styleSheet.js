@@ -169,3 +169,20 @@ export const headerRightComStyle = StyleSheet.create({
     marginLeft: 10,
   },
 });
+export const headerLeftComStyle = StyleSheet.create({
+  container: {
+    position: "absolute",
+    display: "flex",
+    flexDirection: "row",
+    width: "auto",
+    left: 50,
+    top: -80,
+    zIndex: 9999,
+  },
+  icon: {
+    borderRadius: 50,
+    width: 44,
+    height: 44,
+    marginLeft: 10,
+  },
+});

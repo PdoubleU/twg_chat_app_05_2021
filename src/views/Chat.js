@@ -9,7 +9,8 @@ import {
 } from "../helpers/GiftedChatCustomize";
 import HeaderLeftChatComponent from "../components/header/HeaderLeftChatComponent";
 import AddMsg from "../api/mutationAddMsg";
-import messageAdded from "../api/messageAddedSub";
+//import messageAdded from "../api/messageAddedSub";
+//import userIsTyping from "../api/typingUserSub";
 import { unshiftMsgs } from "../helpers/unshiftMsgs";
 import { useSubscription, gql } from "@apollo/client";
 
@@ -20,15 +21,31 @@ const messageAddedSub = gql`
     }
   }
 `;
+const typingSub = gql`
+  subscription typingUser($roomId: String!) {
+    typingUser(roomId: $roomId) {
+      firstName
+    }
+  }
+`;
 
 export function Example({ route }) {
+  const dataLastItem = route.params.data.room.messages.length - 1;
+  const messages = route.params.data.room.messages;
+  const userName = route.params.data.room.messages[dataLastItem].user.firstName;
+  const userPic = route.params.data.room.messages[dataLastItem].user.profilePic;
+  const roomId = route.params.id;
   const [msgs, setMsgs] = useState(null);
   const { addMsg } = AddMsg();
-  const { data, loading, error } = useSubscription(messageAddedSub, {
+  const { newMessage } = useSubscription(messageAddedSub, {
     variables: { roomId },
   });
-  const messages = route.params.data.room.messages;
-  const roomId = route.params.id;
+  const { userIsTyping } = useSubscription(typingSub, {
+    variables: { roomId },
+  });
+
+  console.log(newMessage);
+  console.log(userIsTyping);
 
   useEffect(() => {
     // no messages stored, we can just open empty chat
@@ -49,7 +66,8 @@ export function Example({ route }) {
     <>
       {/* <Text>New message: {!loading && data.body}</Text> */}
       <HeaderLeftChatComponent
-        title={!loading && { data }}
+        title={userName}
+        picture={userPic}
       ></HeaderLeftChatComponent>
       <GiftedChat
         alwaysShowSend={true}
@@ -62,7 +80,7 @@ export function Example({ route }) {
         renderTime={() => null}
         onSend={(message) => onSend(message)}
         user={{
-          id: "184f7251-7688-4ea1-83ba-1d857ab6e4e3",
+          _id: "184f7251-7688-4ea1-83ba-1d857ab6e4e3",
         }}
       />
     </>

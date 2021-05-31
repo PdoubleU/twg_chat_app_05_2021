@@ -10,7 +10,7 @@ function Room({ ...props }) {
   const { loading, error, data } = roomData(id);
   const navigation = useNavigation();
 
-  const handlePress = () => navigation.navigate("Chat", { id, data });
+  const handlePress = (id, data) => navigation.navigate("Chat", { id, data });
 
   return (
     <TouchableOpacity

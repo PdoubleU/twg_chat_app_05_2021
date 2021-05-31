@@ -6,17 +6,24 @@ import {
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { API_TOKEN } from "@env";
-import { WebSocketLink } from "@apollo/client/link/ws";
+import * as AbsintheSocket from "@absinthe/socket";
+import { createAbsintheSocketLink } from "@absinthe/socket-apollo-link";
+import { Socket as PhoenixSocket } from "phoenix";
 
-const wsLink = new WebSocketLink({
-  uri: "wss://chat.thewidlarzgroup.com/socket",
-  options: {
-    reconnect: true,
-    connectionParams: {
-      authToken: API_TOKEN,
+const phoenixSocket = new PhoenixSocket(
+  "wss://chat.thewidlarzgroup.com/socket",
+  {
+    params: () => {
+      return {
+        token: API_TOKEN,
+      };
     },
-  },
-});
+  }
+);
+
+const absintheSocket = AbsintheSocket.create(phoenixSocket);
+
+const wsLink = createAbsintheSocketLink(absintheSocket);
 
 export const authLink = setContext((_, { headers }) => {
   return {
@@ -38,12 +45,10 @@ export let splitLink = split(
     return kind === "OperationDefinition" && operation === "subscription";
   },
   wsLink,
-  httpLink
+  authLink.concat(httpLink)
 );
 
-console.log(splitLink);
-
 export const apolloClient = new ApolloClient({
-  link: authLink.concat(splitLink),
+  link: splitLink,
   cache: new InMemoryCache(),
 });

@@ -1,16 +1,14 @@
-import { useQuery, gql } from "@apollo/client";
+import { useSubscription, gql } from "@apollo/client";
 
 const typingSub = gql`
   subscription typingUser($roomId: String!) {
     typingUser(roomId: $roomId) {
       firstName
-      email
-      id
     }
   }
 `;
 
-export default function roomsData() {
-  const { loading, error, data } = useQuery(roomsQuery);
-  return { loading, error, data };
+export default function userIsTyping(id) {
+  const { data } = useSubscription(typingSub, { variables: { id } });
+  return { data };
 }

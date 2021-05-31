@@ -9,10 +9,9 @@ const messageAddedSub = gql`
 `;
 
 export default function messageAdded(id) {
-  const { newMessage, loading, error } = useSubscription(messageAddedSub, {
+  const { newMessage } = useSubscription(messageAddedSub, {
     variables: { id },
   });
-  console.log(newMessage, loading, error);
 
-  return { newMessage, loading, error };
+  return { newMessage };
 }
