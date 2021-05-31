@@ -9,22 +9,22 @@ import {
 } from "../helpers/GiftedChatCustomize";
 import HeaderLeftChatComponent from "../components/header/HeaderLeftChatComponent";
 import AddMsg from "../api/mutationAddMsg";
-//import messageAdded from "../api/messageAddedSub";
 //import userIsTyping from "../api/typingUserSub";
 import { unshiftMsgs } from "../helpers/unshiftMsgs";
 import { useSubscription, gql } from "@apollo/client";
 
-const messageAddedSub = gql`
-  subscription messageAdded($roomId: String!) {
-    messageAdded(roomId: $roomId) {
-      body
-    }
-  }
-`;
 const typingSub = gql`
   subscription typingUser($roomId: String!) {
     typingUser(roomId: $roomId) {
       firstName
+    }
+  }
+`;
+
+const messageAddedSub = gql`
+  subscription onAddMessage($roomId: String!) {
+    messageAdded(roomId: $roomId) {
+      body
     }
   }
 `;
@@ -43,9 +43,6 @@ export function Example({ route }) {
   const { userIsTyping } = useSubscription(typingSub, {
     variables: { roomId },
   });
-
-  console.log(newMessage);
-  console.log(userIsTyping);
 
   useEffect(() => {
     // no messages stored, we can just open empty chat

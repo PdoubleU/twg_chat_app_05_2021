@@ -9,6 +9,12 @@ function Room({ ...props }) {
   const [activeRoom, setActiveRoom] = useState(false);
   const { loading, error, data } = roomData(id);
   const navigation = useNavigation();
+  const [lastActive, setLastActive] = useState("some time ago");
+
+  useEffect(() => {
+    if (!data) return;
+    setLastActive(data.room.messages[data.room.messages.length - 1].insertedAt);
+  }, [loading]);
 
   const handlePress = (id, data) => navigation.navigate("Chat", { id, data });
 
@@ -56,9 +62,7 @@ function Room({ ...props }) {
                 : roomStyleInActive.activeStatus
             }
           >
-            {activeRoom
-              ? ""
-              : data.room.messages[data.room.messages.length - 1].insertedAt}
+            {activeRoom ? "" : lastActive}
           </Text>
         </>
       ) : (

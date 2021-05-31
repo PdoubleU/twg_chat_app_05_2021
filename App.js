@@ -2,6 +2,9 @@ import React from "react";
 import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
 import Root from "./src/views/Root";
+import { DataProvider } from "./src/providers/DataProvider";
+import { ApolloProvider } from "@apollo/client";
+import { apolloClient } from "./src/api/apolloClient";
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -13,5 +16,11 @@ export default function App() {
   if (!fontsLoaded) {
     return <AppLoading />;
   }
-  return <Root></Root>;
+  return (
+    <ApolloProvider client={apolloClient}>
+      <DataProvider>
+        <Root></Root>
+      </DataProvider>
+    </ApolloProvider>
+  );
 }

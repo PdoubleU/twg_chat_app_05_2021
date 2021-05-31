@@ -146,7 +146,7 @@ export const roomStyleInActive = StyleSheet.create({
   },
   activeStatus: {
     position: "absolute",
-    backgroundColor: colors.active,
+    backgroundColor: colors.whiteBckg,
     top: 8,
     right: 16,
     fontSize: 10,
